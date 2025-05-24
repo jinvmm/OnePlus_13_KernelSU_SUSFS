@@ -16,7 +16,7 @@ on:
 jobs:
   #build-batch-1: # Non Bazel Builds
     #strategy:
-      #fail-fast: false
+      #fail-fast: true
       #matrix:
         #include:
          # - model: OP11
@@ -74,7 +74,7 @@ jobs:
   build-batch-2:
     # needs: build-batch-1
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         include:
           - model: OP13
@@ -133,18 +133,21 @@ jobs:
       REPO_OWNER: ${{ github.repository_owner }}
       REPO_NAME: ${{ github.event.repository.name }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      RELEASE_NAME: "OnePlus 13 Kernel With KernelSU Next & SUSFS v1.5.5"
+      RELEASE_NAME: "OnePlus 13 Kernel With KernelSU Next & SUSFS"
       RELEASE_NOTES: |
-        This release contains KernelSU Next Stable and SUSFS v1.5.5
+        This release contains both the latest available KernelSU Next and SUSFS!
         
-        Horizon Kernel Flasher:
-        -> https://github.com/libxzr/HorizonKernelFlasher
+        Modified Kernel Flasher:
+        -> https://github.com/fatalcoder524/KernelFlasher
         
         KSUN Manager:
         -> https://github.com/KernelSU-Next/KernelSU-Next
         
         SUSFS Module:
         -> https://github.com/sidex15/ksu_module_susfs
+        
+        BBR Optimizer Module:
+        -> https://github.com/fatalcoder524/TCP_Optimiser_Module
         
         Mountify Module:
         -> https://github.com/backslashxx/mountify
@@ -153,15 +156,16 @@ jobs:
         -> https://github.com/felikcat/unlimited-hotspot
         
         Features:
-        [+] KernelSU-Next (Stable)
-        [+] SUSFS v1.5.5
-        [+] Google BBR Support (enabled by default)
-        [+] Magic Mount Support
+        [+] KernelSU-Next ☯
+        [+] SUSFS ඞ
+        [+] Optimized for Magic Mount usage | Shamiko isn't needed anymore!
+        [+] Google BBR Support | Use [this](https://github.com/fatalcoder524/TCP_Optimiser_Module) to enable
         [+] Maphide LineageOS Detections
         [+] Futile Maphide for jit-zygote-cache Detections
         [+] Mountify Support
         [+] Unlimited Hotspot Support
         [+] Forced ECN (Explicit Congestion Notification) for all connections by default
+        [+] Use LZ4 compression algorithm for ZRAM and Hybernation by default if available
         [+] Some minor optimizations
 
     steps:
@@ -188,10 +192,10 @@ jobs:
       - name: Create GitHub Release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ env.NEW_TAG }}  # Use the generated tag for the release
-          prerelease: false  # Mark the release as a pre-release
-          release_name: ${{ env.RELEASE_NAME }}  # Pass the RELEASE_NAME to the action
-          body: ${{ env.RELEASE_NOTES }}  # Pass the RELEASE_NOTES to the action
+          tag_name: ${{ env.NEW_TAG }}
+          prerelease: false
+          release_name: ${{ env.RELEASE_NAME }}
+          body: ${{ env.RELEASE_NOTES }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEW_TAG: ${{ env.NEW_TAG }}
